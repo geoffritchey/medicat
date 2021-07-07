@@ -17,7 +17,6 @@ def get_properties():
 
 
 if __name__ == 'only to declare variabes':
-    print("name is util")
     conn = None
     cursor = None
     str_format = None
@@ -37,9 +36,7 @@ if __name__ == 'only to declare variabes':
 
 try:
     initialized()
-    print("NOT INITIALIZED util")
 except NameError:
-    print("INITIALIZE util")
     conn = pyodbc.connect(
         r'DRIVER={SQL Server};'
         r'SERVER=gefjun.lcunet.lcu.edu;'
@@ -53,6 +50,9 @@ except NameError:
 
     username = build.nexus_username
     password = build.nexus_password
+
+    sftp_username = build.sftp_username
+    sftp_password = build.sftp_password
 
     # Create a persistent session in order to maintain authentication
     authenticated_session = requests.Session()
