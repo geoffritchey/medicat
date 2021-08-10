@@ -17,7 +17,8 @@ log.setLevel(logging.INFO)
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
-def get_current_students(session=Util.authenticated_session, today=datetime.datetime.now().strftime("%Y-%m-%d")):
+
+def get_current_students(session=Util.authenticated_session, today=datetime.datetime.now()):
     phone_regex = re.compile(r"[-() _]")
     newline_regex = re.compile("\r|\n")
     log.debug(today)
@@ -32,11 +33,11 @@ def get_current_students(session=Util.authenticated_session, today=datetime.date
                    ",Student($select=Id,Ssn,StudentNumber,LastName,FirstName,MiddleName,DateOfBirth,StreetAddress" \
                    ",StreetAddress2,City,State,PostalCode,WorkPhoneNumber,MobilePhoneNumber,PhoneNumber,EmailAddress," \
                    "DateOfBirth,MaritalStatusId,NickName)" \
-                   "&$filter=Term/EndDate ge {1} and Term/StartDate le {1} " \
+                   "&$filter=Term/EndDate ge {1} and Term/StartDate le {2} " \
                    "&$select=Status,Student,StudentEnrollmentPeriodId" \
                    "&$orderby=Student/StudentNumber" \
                    "&$apply=groupby((Student/StudentNumber))" \
-                   "".format(Util.root_uri, today)
+                   "".format(Util.root_uri, today.strftime("%Y-%m-%d"), (today + datetime.timedelta(weeks=4)).strftime("%Y-%m-%d"))
 
     r = session.get(students_uri)
     r.raise_for_status()
